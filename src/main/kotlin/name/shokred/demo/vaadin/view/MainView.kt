@@ -1,11 +1,13 @@
 package name.shokred.demo.vaadin.view
 
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.value.ValueChangeMode
 import com.vaadin.flow.router.Route
 import name.shokred.demo.vaadin.domain.Customer
+import name.shokred.demo.vaadin.form.CustomerForm
 import name.shokred.demo.vaadin.service.CustomerService
 
 @Route
@@ -13,6 +15,7 @@ class MainView() : VerticalLayout() {
     private val service = CustomerService.INSTANCE
     private val grid = Grid(Customer::class.java)
     private val filterText = TextField()
+    private val form = CustomerForm(this)
 
     init {
         filterText.placeholder = "Filter by name..."
@@ -24,14 +27,18 @@ class MainView() : VerticalLayout() {
 
         grid.setColumns("firstName", "lastName", "status")
 
-        add(filterText, grid)
+        val mainContent = HorizontalLayout(grid, form)
+        mainContent.setSizeFull()
+        grid.setSizeFull()
+
+        add(filterText, mainContent)
 
         setSizeFull()
 
         updateList()
     }
 
-    private fun updateList() {
+    fun updateList() {
         grid.setItems(service.findAll(filterText.value))
     }
 }
