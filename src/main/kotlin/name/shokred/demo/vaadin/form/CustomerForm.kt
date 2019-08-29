@@ -47,7 +47,7 @@ class CustomerForm(private val mainView: MainView) : FormLayout() {
         delete.addClickListener { delete() }
     }
 
-    private fun setCustomer(entry: Customer?) {
+    fun setCustomer(entry: Customer?) {
         binder.bean = entry
 
         if (entry == null) {
